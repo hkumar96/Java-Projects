@@ -7,7 +7,7 @@ class alarmClock {
 	long sleepTime;
 	alarmClock(){
 		current = Calendar.getInstance();
-		System.out.println(current.getTime());
+		System.out.printf("\nCurrent time is %s\n",current.getTime());
 	}
 	void showElapsedTime(){
 	}
@@ -22,6 +22,7 @@ class alarmClock {
 			 
 			    // play the audio clip with the audioplayer class
 			    AudioPlayer.player.start(audioStream);
+			    setAlarm(end.get(Calendar.HOUR_OF_DAY),end.get(Calendar.MINUTE),end.get(Calendar.SECOND));
 	    	}catch (IOException ex){
 	    		System.out.println("Unable to open file");
 	    	}
@@ -36,16 +37,16 @@ class alarmClock {
 		temp.set(Calendar.MINUTE,mm);
 		temp.set(Calendar.SECOND,ss);
 		// System.out.println(end.getTime() + "\n" + temp.getTime());
-		if (end.compareTo(temp)>0){
-			end.set(temp.DAY_OF_MONTH,end.get(Calendar.DAY_OF_MONTH)+1);
+		if (end.compareTo(temp)>=0){
+			end.set(Calendar.DAY_OF_MONTH,end.get(Calendar.DAY_OF_MONTH)+1);
 		}
 		end.set(Calendar.HOUR_OF_DAY,hh);
 		end.set(Calendar.MINUTE,mm);
 		end.set(Calendar.SECOND,ss);
-		System.out.println(end.getTime());
+		System.out.printf("\nAlarm set for %s\n",end.getTime());
 		current = Calendar.getInstance();
 		sleepTime = end.getTimeInMillis() - current.getTimeInMillis();
-		System.out.println(sleepTime);
+		System.out.printf("\nTime remaining %d seconds!\n",(sleepTime/1000));
 		try{
 			Thread.sleep(sleepTime);
 			ringAlarm();
