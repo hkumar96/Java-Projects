@@ -5,11 +5,13 @@ import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
+import java.util.regex.*;
 
 class AlarmClock {
+	private static final String REGEX = "^([0-1]?\\d|2[0-3]):[0-5]?\\d:[0-5]?\\d";
 	GregorianCalendar currTime,alarmTime;
 	boolean isSet;
-
+	
 	public AlarmClock(){
 		currTime = new GregorianCalendar();
 		isSet = false;
@@ -34,6 +36,12 @@ class AlarmClock {
 		int count=1;
 		hh = mm = ss = 0;
 
+		Pattern timePattern = Pattern.compile(REGEX);
+		Matcher matcher = timePattern.matcher(timeStr);
+		if(!matcher.matches()){
+			JOptionPane.showMessageDialog(null,"You entered wrong input! Please enter again.");
+			return ;
+		}
 		for(int i = 0; i<timeStr.length(); i++) {
 			if (timeStr.charAt(i) == ':') {
 				if (count == 1)
@@ -76,7 +84,13 @@ class AlarmClock {
 
 	public void ringAlarm(){
 
-		JOptionPane.showMessageDialog(null,"Alarm ringing!");
+		Thread t;
+		t= new Thread(){
+			public void run(){
+				JOptionPane.showMessageDialog(null,"Alarm ringing!");
+			}
+		};
+		t.start();
 
 		try{
 			String gongFile = "tone.wav";
