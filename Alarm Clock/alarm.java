@@ -180,6 +180,11 @@ public class alarm extends JFrame implements ActionListener {
 					clock1.ringAlarm();
 				}
 			}
+			try{
+				Thread.sleep(1000);
+			}catch(InterruptedException e){
+				return ;
+			}
 		}
 	}
 }
